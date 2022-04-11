@@ -1,0 +1,44 @@
+-- create the start data
+CREATE TABLE user
+(
+    id        INTEGER PRIMARY KEY,
+    firstName TEXT NOT NULL,
+    lastName  TEXT NOT NULL,
+    `admin`   INTEGER AS Boolean DEFAULT 0 NOT NULL
+);
+
+-- inject the start data
+INSERT INTO user(firstName, lastName, admin)
+VALUES ("Thomas", "Anderson",  1);
+
+INSERT INTO user(firstName, lastName)
+VALUES ("John", "Doe"),
+       ("Jane", "Doe");
+
+-- add the sql functions to be mapped into kotlin (by Sqldelight (check the UserRepository for usages))
+-- variables are added by using ?
+selectAll
+:
+SELECT *
+FROM user;
+
+selectOne
+:
+SELECT *
+FROM user WHERE id=?;
+
+deleteOne
+:
+DELETE FROM user
+WHERE id = ?;
+
+insertOne
+:
+INSERT INTO `user`(firstName, lastName, `admin`)
+VALUES (?, ?, ?);
+
+selectChanges:
+SELECT changes();
+
+lastInsertId:
+SELECT last_insert_rowid();
